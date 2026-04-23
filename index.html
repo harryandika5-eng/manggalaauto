@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manggala Auto - Mobil</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav">
+            <div class="logo">🚗 Manggala Auto </div>
+            <div class="nav-links">
+                <a href="#home" class="active">Beranda</a>
+                <a href="#cars">Katalog Mobil</a>
+                <a href="#about">Tentang Kami</a>
+                <a href="#contact">Kontak</a>
+                <a href="#cart" class="cart-link">🛒 Keranjang (<span id="cart-count">0</span>)</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Selamat Datang di Manggala Auto</h1>
+            <p>Mobil bekas berkualitas tinggi</p>
+            <button class="cta-button" onclick="document.getElementById('cars').scrollIntoView({behavior: 'smooth'})">
+                Jelajahi Katalog
+            </button>
+        </div>
+    </section>
+
+    <!-- Cars Listing Section -->
+    <section id="cars" class="cars-section">
+        <div class="container">
+            <h2>Katalog Mobil Kami</h2>
+            
+            <!-- Filter Options -->
+            <div class="filter-section">
+                <input type="text" id="search-input" placeholder="Cari mobil..." class="search-box">
+                <select id="brand-filter" class="filter-select">
+                    <option value="">Semua Merek</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Honda">Honda</option>
+                    <option value="Nissan">Nissan</option>
+                    <option value="Mitsubishi">Mitsubishi</option>
+                </select>
+                <select id="price-filter" class="filter-select">
+                    <option value="">Semua Harga</option>
+                    <option value="0-200">Rp 0 - 200 Juta</option>
+                    <option value="200-500">Rp 200 - 500 Juta</option>
+                    <option value="500-1000">Rp 500 Juta - 1 Miliar</option>
+                    <option value="1000+">Rp 1 Miliar+</option>
+                </select>
+            </div>
+
+            <!-- Cars Grid -->
+            <div id="cars-grid" class="cars-grid">
+                <!-- Cars will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>🛒 Keranjang Belanja</h2>
+            <div id="cart-items" class="cart-items">
+                <!-- Cart items will be populated here -->
+            </div>
+            <div class="cart-summary">
+                <h3>Total: Rp <span id="total-price">0</span></h3>
+                <button class="checkout-button" onclick="goToCheckout()">Lanjut ke Pembayaran</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Page -->
+    <div id="checkout-page" class="checkout-page hidden">
+        <div class="checkout-container">
+            <div class="checkout-header">
+                <button onclick="backToShop()" class="back-button">← Kembali</button>
+                <h2>Checkout</h2>
+            </div>
+            
+            <div class="checkout-content">
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3>Ringkasan Pesanan</h3>
+                    <div id="checkout-items" class="checkout-items">
+                        <!-- Items will be populated here -->
+                    </div>
+                    <div class="summary-total">
+                        <strong>Total: Rp <span id="checkout-total">0</span></strong>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="payment-form">
+                    <h3>Data Pembeli</h3>
+                    
+                    <div class="form-group">
+                        <label for="buyer-name">Nama Lengkap</label>
+                        <input type="text" id="buyer-name" placeholder="Masukkan nama Anda" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="buyer-email">Email</label>
+                        <input type="email" id="buyer-email" placeholder="Masukkan email Anda" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="buyer-phone">Nomor Telepon</label>
+                        <input type="tel" id="buyer-phone" placeholder="Masukkan nomor telepon" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="buyer-address">Alamat</label>
+                        <textarea id="buyer-address" placeholder="Masukkan alamat lengkap" required></textarea>
+                    </div>
+
+                    <h3>Metode Pembayaran</h3>
+                    
+                    <div class="payment-methods">
+                        <label class="payment-option">
+                            <input type="radio" name="payment-method" value="transfer-bank" checked>
+                            <span>Transfer Bank</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment-method" value="credit-card">
+                            <span>Kartu Kredit</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment-method" value="ewallet">
+                            <span>E-Wallet (GCash, OVO, DANA)</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment-method" value="installment">
+                            <span>Cicilan</span>
+                        </label>
+                    </div>
+
+                    <!-- Bank Transfer Details -->
+                    <div id="bank-details" class="payment-details">
+                        <h4>Rekening Bank</h4>
+                        <p><strong>Bank BCA</strong><br>
+                        Nomor Rekening: <br>
+                        Atas Nama: Harry Andika Syaputra</p>
+                        
+                    </div>
+
+                    <!-- Installment Options -->
+                    <div id="installment-options" class="payment-details hidden">
+                        <h4>Pilihan Cicilan</h4>
+                        <label class="installment-option">
+                            <input type="radio" name="installment-period" value="12" checked>
+                            <span>12 Bulan (Bunga 3%)</span>
+                        </label>
+                        <label class="installment-option">
+                            <input type="radio" name="installment-period" value="24">
+                            <span>24 Bulan (Bunga 4%)</span>
+                        </label>
+                        <label class="installment-option">
+                            <input type="radio" name="installment-period" value="36">
+                            <span>36 Bulan (Bunga 5%)</span>
+                        </label>
+                        <p id="installment-calculation" class="installment-calc"></p>
+                    </div>
+
+                    <button class="payment-button" onclick="processPayment()">Konfirmasi Pembayaran</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content success-content">
+            <div class="success-icon">✓</div>
+            <h2>Pembayaran Berhasil!</h2>
+            <p id="success-message"></p>
+            <button class="cta-button" onclick="finishPurchase()">Kembali ke Beranda</button>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>Tentang Manggala Auto</h2>
+            <p>AutoShop adalah platform penjualan mobil terpercaya dengan berbagai pilihan kendaraan berkualitas tinggi. Kami berkomitmen memberikan pelayanan terbaik dan harga kompetitif untuk setiap pelanggan.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Hubungi Kami</h2>
+            <p>📞 +62 81311222656</p>
+            <p>📧 </p>
+            <p>📍 Jl. Raya Buaran Blok b  No.16 , Duren Sawit, Klender Jakarta, Indonesia</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Manggala Auto. Semua hak dilindungi.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
